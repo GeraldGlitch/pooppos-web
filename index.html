@@ -1,12 +1,744 @@
 <!DOCTYPE html>
-<html lang="">
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-  </head>
-  <body>
-    <header></header>
-    <main></main>
-    <footer></footer>
-  </body>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PoopPOS — Sistema de Control Todo en Uno para Pequeños Negocios</title>
+  <meta name="description"
+    content="PoopPOS es un sistema POS gratuito con base de datos local para pequeños negocios. Ventas, gastos, inventario, clientes, proveedores, empleados, reportes, cuentas y configuración en un solo lugar.">
+  <link rel="icon" type="image/svg+xml" href="icon.svg">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            poop: {
+              50: '#fef7ed',
+              100: '#fdecd4',
+              200: '#fad5a8',
+              300: '#f6b871',
+              400: '#f19338',
+              500: '#ee7b15',
+              600: '#df610b',
+              700: '#b9490c',
+              800: '#933a12',
+              900: '#773112',
+            },
+            dark: {
+              50: '#f6f6f6',
+              100: '#e7e7e7',
+              200: '#d1d1d1',
+              300: '#b0b0b0',
+              400: '#888888',
+              500: '#6d6d6d',
+              600: '#5d5d5d',
+              700: '#4f4f4f',
+              800: '#383838',
+              900: '#2a2a2a',
+              950: '#1a1a1a',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background-color: #0f0f0f;
+      color: #e7e7e7;
+    }
+
+    /* Gradient text */
+    .gradient-text {
+      background: linear-gradient(135deg, #f19338, #ee7b15, #df610b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Hero glow */
+    .hero-glow {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(241, 147, 56, 0.12) 0%, transparent 70%);
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Feature card hover */
+    .feature-card {
+      background: linear-gradient(145deg, rgba(42, 42, 42, 0.6), rgba(26, 26, 26, 0.8));
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(10px);
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .feature-card:hover {
+      border-color: rgba(241, 147, 56, 0.3);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px -12px rgba(241, 147, 56, 0.15);
+    }
+
+    /* Screenshot showcase */
+    .screenshot-wrapper {
+      position: relative;
+    }
+
+    .screenshot-wrapper::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: 1rem;
+      background: linear-gradient(135deg, rgba(241, 147, 56, 0.4), rgba(223, 97, 11, 0.1));
+      z-index: -1;
+    }
+
+    /* Floating animation */
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-12px);
+      }
+    }
+
+    .float-animation {
+      animation: float 4s ease-in-out infinite;
+    }
+
+    /* Pulse ring on logo */
+    @keyframes pulse-ring {
+      0% {
+        transform: scale(0.9);
+        opacity: 0.6;
+      }
+
+      50% {
+        transform: scale(1.05);
+        opacity: 0.2;
+      }
+
+      100% {
+        transform: scale(0.9);
+        opacity: 0.6;
+      }
+    }
+
+    .pulse-ring {
+      animation: pulse-ring 3s ease-in-out infinite;
+    }
+
+    /* Badge shimmer */
+    @keyframes shimmer {
+      0% {
+        background-position: -200% center;
+      }
+
+      100% {
+        background-position: 200% center;
+      }
+    }
+
+    .badge-shimmer {
+      background: linear-gradient(90deg, transparent 30%, rgba(255, 255, 255, 0.08) 50%, transparent 70%);
+      background-size: 200% 100%;
+      animation: shimmer 3s linear infinite;
+    }
+
+    /* Nav blur */
+    .nav-blur {
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      background: rgba(15, 15, 15, 0.8);
+    }
+
+    /* Smooth scroll offset for fixed nav */
+    section[id] {
+      scroll-margin-top: 80px;
+    }
+
+    /* Feature icon container */
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+
+    /* CTA Button */
+    .cta-btn {
+      background: linear-gradient(135deg, #f19338, #df610b);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .cta-btn:hover::before {
+      left: 100%;
+    }
+
+    .cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px -8px rgba(241, 147, 56, 0.5);
+    }
+
+    /* Stat card */
+    .stat-card {
+      background: rgba(42, 42, 42, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+  </style>
+</head>
+
+<body class="antialiased">
+
+  <!-- ==================== NAVIGATION ==================== -->
+  <nav class="nav-blur fixed top-0 left-0 right-0 z-50 border-b border-white/5" id="navbar">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <!-- Logo -->
+        <a href="#" class="flex items-center gap-3 group" aria-label="PoopPOS Inicio">
+          <img src="images/logos.png" alt="PoopPOS logo"
+            class="w-10 h-10 rounded-full object-contain group-hover:scale-105 transition-transform duration-300 drop-shadow-md">
+          <span class="text-xl font-bold tracking-tight">Poop<span class="gradient-text">POS</span></span>
+        </a>
+
+        <!-- Desktop Nav -->
+        <div class="hidden md:flex items-center gap-8">
+          <a href="#features"
+            class="text-sm text-dark-300 hover:text-white transition-colors duration-200">Características</a>
+          <a href="#modules" class="text-sm text-dark-300 hover:text-white transition-colors duration-200">Módulos</a>
+          <a href="#screenshots" class="text-sm text-dark-300 hover:text-white transition-colors duration-200">Vista
+            Previa</a>
+          <a href="#download" class="cta-btn text-sm font-semibold text-white px-5 py-2 rounded-full">
+            Descargar Gratis
+          </a>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button class="md:hidden text-dark-300 hover:text-white p-2 rounded-lg transition-colors" id="mobile-menu-btn"
+          aria-label="Abrir menú" aria-expanded="false">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div class="hidden md:hidden border-t border-white/5" id="mobile-menu">
+      <div class="px-4 py-4 space-y-3">
+        <a href="#features"
+          class="block text-sm text-dark-300 hover:text-white py-2 transition-colors">Características</a>
+        <a href="#modules" class="block text-sm text-dark-300 hover:text-white py-2 transition-colors">Módulos</a>
+        <a href="#screenshots" class="block text-sm text-dark-300 hover:text-white py-2 transition-colors">Vista
+          Previa</a>
+        <a href="#download"
+          class="cta-btn block text-center text-sm font-semibold text-white px-5 py-2.5 rounded-full mt-2">
+          Descargar Gratis
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ==================== HERO ==================== -->
+  <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-16" id="hero">
+    <div class="hero-glow"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="text-center max-w-4xl mx-auto">
+        <!-- Badge -->
+        <div
+          class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-poop-700/30 bg-poop-900/20 mb-8 badge-shimmer">
+          <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+          <span class="text-xs font-medium text-poop-300 tracking-wide uppercase">100% Gratis · Base de datos
+            local</span>
+        </div>
+
+        <!-- Logo -->
+        <div class="flex justify-center mb-8">
+          <div class="relative">
+            <div class="absolute inset-0 rounded-full bg-poop-500/10 blur-3xl pulse-ring"></div>
+            <img src="images/logos.png" alt="PoopPOS mascota"
+              class="w-32 h-32 sm:w-40 sm:h-40 relative float-animation drop-shadow-2xl">
+          </div>
+        </div>
+
+        <!-- Heading -->
+        <h1 class="text-4xl sm:text-5xl md:text-7xl font-black tracking-tight leading-[1.1] mb-6">
+          Control total para<br>
+          <span class="gradient-text">tu negocio</span>
+        </h1>
+
+        <!-- Subheading -->
+        <p class="text-lg sm:text-xl text-dark-300 max-w-2xl mx-auto mb-10 leading-relaxed">
+          PoopPOS es el sistema todo en uno que necesitas para administrar ventas, gastos, inventario, clientes y más.
+          Sin costos mensuales, sin internet obligatorio.
+        </p>
+
+        <!-- CTA Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <a href="#download"
+            class="cta-btn text-base font-bold text-white px-8 py-3.5 rounded-full inline-flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            Descargar Ahora
+          </a>
+          <a href="#features"
+            class="text-base font-semibold text-dark-300 hover:text-white px-8 py-3.5 rounded-full border border-white/10 hover:border-white/20 transition-all duration-300 inline-flex items-center gap-2">
+            Ver Características
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </a>
+        </div>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-3 gap-4 mt-16 max-w-lg mx-auto">
+          <div class="stat-card rounded-xl p-4">
+            <div class="text-2xl sm:text-3xl font-bold gradient-text">9+</div>
+            <div class="text-xs text-dark-400 mt-1">Módulos</div>
+          </div>
+          <div class="stat-card rounded-xl p-4">
+            <div class="text-2xl sm:text-3xl font-bold gradient-text">$0</div>
+            <div class="text-xs text-dark-400 mt-1">Siempre gratis</div>
+          </div>
+          <div class="stat-card rounded-xl p-4">
+            <div class="text-2xl sm:text-3xl font-bold gradient-text">∞</div>
+            <div class="text-xs text-dark-400 mt-1">Sin límites</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+      <svg class="w-5 h-5 text-dark-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+      </svg>
+    </div>
+  </section>
+
+  <!-- ==================== FEATURES HIGHLIGHTS ==================== -->
+  <section class="py-24 relative" id="features">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <!-- Section Header -->
+      <div class="text-center max-w-2xl mx-auto mb-16">
+        <span class="text-xs font-semibold tracking-widest uppercase text-poop-400 mb-3 block">¿Por qué PoopPOS?</span>
+        <h2 class="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
+          Todo lo que necesitas,<br><span class="gradient-text">nada que no</span>
+        </h2>
+        <p class="text-dark-300 leading-relaxed">
+          Diseñado específicamente para pequeños negocios que buscan simplicidad y control sin complicaciones.
+        </p>
+      </div>
+
+      <!-- Feature Cards -->
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Free -->
+        <div class="feature-card rounded-2xl p-6">
+          <div class="feature-icon bg-green-500/10 text-green-400 mb-4">💰</div>
+          <h3 class="text-lg font-semibold mb-2">100% Gratuito</h3>
+          <p class="text-sm text-dark-400 leading-relaxed">
+            Sin costos escondidos, sin suscripciones mensuales. PoopPOS es y será siempre totalmente gratis.
+          </p>
+        </div>
+
+        <!-- Local -->
+        <div class="feature-card rounded-2xl p-6">
+          <div class="feature-icon bg-blue-500/10 text-blue-400 mb-4">🔒</div>
+          <h3 class="text-lg font-semibold mb-2">Base de Datos Local</h3>
+          <p class="text-sm text-dark-400 leading-relaxed">
+            Tu información se guarda en tu dispositivo. No necesitas internet ni servidores externos. Tus datos son
+            tuyos.
+          </p>
+        </div>
+
+        <!-- Multi-currency -->
+        <div class="feature-card rounded-2xl p-6">
+          <div class="feature-icon bg-poop-500/10 text-poop-400 mb-4">💱</div>
+          <h3 class="text-lg font-semibold mb-2">Multi-Moneda</h3>
+          <p class="text-sm text-dark-400 leading-relaxed">
+            Configura las monedas que aceptas, define cuál es la principal y trabaja con tasas de cambio personalizadas.
+          </p>
+        </div>
+
+        <!-- Quick sales -->
+        <div class="feature-card rounded-2xl p-6">
+          <div class="feature-icon bg-purple-500/10 text-purple-400 mb-4">⚡</div>
+          <h3 class="text-lg font-semibold mb-2">Ventas y Gastos Rápidos</h3>
+          <p class="text-sm text-dark-400 leading-relaxed">
+            Modo rápido para cuando el cliente no está registrado o cuando necesitas registrar un gasto sin
+            complicaciones.
+          </p>
+        </div>
+
+        <!-- Reports -->
+        <div class="feature-card rounded-2xl p-6">
+          <div class="feature-icon bg-cyan-500/10 text-cyan-400 mb-4">📊</div>
+          <h3 class="text-lg font-semibold mb-2">Reportes Diarios</h3>
+          <p class="text-sm text-dark-400 leading-relaxed">
+            Al terminar el día, genera reportes con todas las ventas y gastos realizados. Control completo de cada peso.
+          </p>
+        </div>
+
+        <!-- Permissions -->
+        <div class="feature-card rounded-2xl p-6">
+          <div class="feature-icon bg-rose-500/10 text-rose-400 mb-4">🛡️</div>
+          <h3 class="text-lg font-semibold mb-2">Control de Acceso</h3>
+          <p class="text-sm text-dark-400 leading-relaxed">
+            Gestiona empleados con permisos individuales y registra toda la actividad con el log de actividad integrado.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== MODULES DETAIL ==================== -->
+  <section class="py-24 relative" id="modules">
+    <!-- Subtle background gradient -->
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-poop-900/5 to-transparent pointer-events-none">
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <!-- Section Header -->
+      <div class="text-center max-w-2xl mx-auto mb-16">
+        <span class="text-xs font-semibold tracking-widest uppercase text-poop-400 mb-3 block">Módulos</span>
+        <h2 class="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
+          Un módulo para<br><span class="gradient-text">cada necesidad</span>
+        </h2>
+        <p class="text-dark-300 leading-relaxed">
+          Cada aspecto de tu negocio cubierto en una sola aplicación.
+        </p>
+      </div>
+
+      <!-- Modules Grid -->
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+
+        <!-- Ventas -->
+        <div class="feature-card rounded-2xl p-6 group">
+          <div class="flex items-start gap-4">
+            <div class="feature-icon bg-yellow-500/10 text-yellow-400">💲</div>
+            <div>
+              <h3 class="text-base font-semibold mb-1.5 group-hover:text-poop-300 transition-colors">Ventas</h3>
+              <p class="text-sm text-dark-400 leading-relaxed">
+                Procesa ventas en las monedas que configures. Incluye venta rápida para clientes que no están
+                registrados o no desean dar sus datos.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gastos -->
+        <div class="feature-card rounded-2xl p-6 group">
+          <div class="flex items-start gap-4">
+            <div class="feature-icon bg-red-500/10 text-red-400">📤</div>
+            <div>
+              <h3 class="text-base font-semibold mb-1.5 group-hover:text-poop-300 transition-colors">Gastos</h3>
+              <p class="text-sm text-dark-400 leading-relaxed">
+                Registra transacciones de gastos con proveedores. Opción de gasto rápido para registrar sin
+                complicaciones.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Inventario -->
+        <div class="feature-card rounded-2xl p-6 group">
+          <div class="flex items-start gap-4">
+            <div class="feature-icon bg-amber-500/10 text-amber-400">📦</div>
+            <div>
+              <h3 class="text-base font-semibold mb-1.5 group-hover:text-poop-300 transition-colors">Inventario</h3>
+              <p class="text-sm text-dark-400 leading-relaxed">
+                Agrega productos y asigna categorías para organizarlos mejor. Gestiona categorías disponibles desde el
+                propio módulo.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Clientes -->
+        <div class="feature-card rounded-2xl p-6 group">
+          <div class="flex items-start gap-4">
+            <div class="feature-icon bg-blue-500/10 text-blue-400">👥</div>
+            <div>
+              <h3 class="text-base font-semibold mb-1.5 group-hover:text-poop-300 transition-colors">Clientes</h3>
+              <p class="text-sm text-dark-400 leading-relaxed">
+                Guarda información de contacto de tus clientes y lleva seguimiento de sus gastos a lo largo del tiempo.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Proveedores -->
+        <div class="feature-card rounded-2xl p-6 group">
+          <div class="flex items-start gap-4">
+            <div class="feature-icon bg-orange-500/10 text-orange-400">🚚</div>
+            <div>
+              <h3 class="text-base font-semibold mb-1.5 group-hover:text-poop-300 transition-colors">Proveedores</h3>
+              <p class="text-sm text-dark-400 leading-relaxed">
+                Administra información de proveedores y controla cuánto has gastado con cada uno a lo largo del tiempo.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Empleados -->
+        <div class="feature-card rounded-2xl p-6 group">
+          <div class="flex items-start gap-4">
+            <div class="feature-icon bg-indigo-500/10 text-indigo-400">🧑‍💼</div>
+            <div>
+              <h3 class="text-base font-semibold mb-1.5 group-hover:text-poop-300 transition-colors">Empleados</h3>
+              <p class="text-sm text-dark-400 leading-relaxed">
+                Crea perfiles con acceso a la app, gestiona permisos individuales e información de contacto de cada
+                empleado.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reportes -->
+        <div class="feature-card rounded-2xl p-6 group">
+          <div class="flex items-start gap-4">
+            <div class="feature-icon bg-teal-500/10 text-teal-400">📋</div>
+            <div>
+              <h3 class="text-base font-semibold mb-1.5 group-hover:text-poop-300 transition-colors">Reportes</h3>
+              <p class="text-sm text-dark-400 leading-relaxed">
+                Al seleccionar "Terminar día" en Ventas, se genera un reporte completo con todas las transacciones del
+                día.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cuentas -->
+        <div class="feature-card rounded-2xl p-6 group">
+          <div class="flex items-start gap-4">
+            <div class="feature-icon bg-emerald-500/10 text-emerald-400">🏦</div>
+            <div>
+              <h3 class="text-base font-semibold mb-1.5 group-hover:text-poop-300 transition-colors">Cuentas</h3>
+              <p class="text-sm text-dark-400 leading-relaxed">
+                Administra y crea cuentas financieras para ver balances en todas las monedas soportadas por tu negocio.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Configuración -->
+        <div class="feature-card rounded-2xl p-6 group">
+          <div class="flex items-start gap-4">
+            <div class="feature-icon bg-gray-500/10 text-gray-400">⚙️</div>
+            <div>
+              <h3 class="text-base font-semibold mb-1.5 group-hover:text-poop-300 transition-colors">Configuración</h3>
+              <p class="text-sm text-dark-400 leading-relaxed">
+                Configura monedas soportadas, define la moneda principal y revisa logs de actividad para rastrear
+                acciones de usuarios.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SCREENSHOTS ==================== -->
+  <section class="py-24 relative overflow-hidden" id="screenshots">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Section Header -->
+      <div class="text-center max-w-2xl mx-auto mb-16">
+        <span class="text-xs font-semibold tracking-widest uppercase text-poop-400 mb-3 block">Vista Previa</span>
+        <h2 class="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
+          Conoce la <span class="gradient-text">interfaz</span>
+        </h2>
+        <p class="text-dark-300 leading-relaxed">
+          Una interfaz oscura, limpia y fácil de usar. Diseñada para que el trabajo sea rápido y sin distracciones.
+        </p>
+      </div>
+
+      <!-- Screenshots Grid -->
+      <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        <!-- Dashboard -->
+        <div>
+          <div class="screenshot-wrapper rounded-2xl overflow-hidden">
+            <img src="images/main-dashboard.png" alt="PoopPOS Dashboard principal mostrando los 9 módulos"
+              class="w-full rounded-2xl" loading="lazy">
+          </div>
+          <p class="text-center text-sm text-dark-400 mt-4 font-medium">Dashboard Principal — Acceso rápido a todos los
+            módulos</p>
+        </div>
+
+        <!-- Login -->
+        <div>
+          <div class="screenshot-wrapper rounded-2xl overflow-hidden">
+            <img src="images/login.png" alt="PoopPOS pantalla de login con PIN" class="w-full rounded-2xl"
+              loading="lazy">
+          </div>
+          <p class="text-center text-sm text-dark-400 mt-4 font-medium">Login con PIN — Seguro y rápido para cada
+            empleado</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== CTA / DOWNLOAD ==================== -->
+  <section class="py-24 relative" id="download">
+    <div class="absolute inset-0 bg-gradient-to-t from-poop-900/10 to-transparent pointer-events-none"></div>
+
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="feature-card rounded-3xl p-8 sm:p-12 text-center">
+        <!-- Logo small -->
+        <div class="flex justify-center mb-6">
+          <img src="images/logos.png" alt="PoopPOS" class="w-20 h-20 rounded-xl float-animation">
+        </div>
+
+        <h2 class="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
+          ¿Listo para tomar el <span class="gradient-text">control</span>?
+        </h2>
+        <p class="text-dark-300 max-w-lg mx-auto mb-8 leading-relaxed">
+          Descarga PoopPOS hoy y empieza a administrar tu negocio de forma simple, gratuita y sin conexión a internet.
+        </p>
+
+        <a href="#"
+          class="cta-btn text-base font-bold text-white px-10 py-4 rounded-full inline-flex items-center gap-3"
+          id="download-btn">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+          </svg>
+          Descargar Gratis
+        </a>
+
+        <p class="text-xs text-dark-500 mt-6">Descarga estará disponible próximamente</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="border-t border-white/5 py-12" role="contentinfo">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+        <!-- Logo -->
+        <div class="flex items-center gap-3">
+          <img src="images/logos.png" alt="PoopPOS" class="w-8 h-8 rounded-lg">
+          <span class="text-sm font-semibold">Poop<span class="gradient-text">POS</span></span>
+        </div>
+
+        <!-- Copyright -->
+        <p class="text-xs text-dark-500">
+          &copy; 2026 PoopPOS by GeraldGlitch Todos los derechos reservados.
+        </p>
+
+        <!-- Links -->
+        <div class="flex items-center gap-6">
+          <a href="#features" class="text-xs text-dark-400 hover:text-white transition-colors">Características</a>
+          <a href="#modules" class="text-xs text-dark-400 hover:text-white transition-colors">Módulos</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== SCRIPTS ==================== -->
+  <script>
+    // Mobile menu toggle
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    menuBtn.addEventListener('click', () => {
+      const isOpen = !mobileMenu.classList.contains('hidden');
+      mobileMenu.classList.toggle('hidden');
+      menuBtn.setAttribute('aria-expanded', !isOpen);
+    });
+
+    // Close mobile menu on link click
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        menuBtn.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    // Navbar background on scroll
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 20) {
+        navbar.classList.add('border-b', 'border-white/10');
+      } else {
+        navbar.classList.remove('border-white/10');
+      }
+    });
+
+    // Intersection Observer for fade-in animations
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.1,
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    // Animate feature cards and sections on scroll
+    document.querySelectorAll('.feature-card, .screenshot-wrapper, .stat-card').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(24px)';
+      el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      observer.observe(el);
+    });
+  </script>
+</body>
+
 </html>
