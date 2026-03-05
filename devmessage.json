@@ -1,5 +1,5 @@
 {
-  "devmsj": 1,
-  "title": "Título aquí",
-  "message": "Mensaje aquí"
+  "devmsj": 2,
+  "title": "Mensaje del desarrollador",
+  "message": "Esta es una prueba para verificar que los mensajes\n del desarrollador funcionen correctamente"
 }
