@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "title": "Nueva Actualización",
-  "message": "Este es el mensaje que se verá cuando el developer saque una\nnueva Actualización del sistema"
+  "message": "Opción para exportar/importar tu base de datos\nAlgunos fixs menores,\nPor favor asegura tu base de datos antes de actualizar"
 }
