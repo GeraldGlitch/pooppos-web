@@ -1,5 +1,5 @@
 {
-  "version": 2,
-  "title": "Nueva Actualización",
-  "message": "Opción para exportar/importar tu base de datos\nAlgunos fixs menores,\nPor favor asegura tu base de datos antes de actualizar"
+  "version": 3,
+  "title": "Nueva Actualización disponible - v 1.0.1",
+  "message": "Pequeña actualización, \n - Mejoras en proceso de exportar/importar tu base de datos\n - Ahora al reestablecer todo por seguridad es obligatorio exportar una copia de tu base de datos"
 }
