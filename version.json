@@ -1,5 +1,5 @@
 {
-  "version": 3,
-  "title": "Nueva Actualización disponible - v 1.0.1",
-  "message": "Pequeña actualización, \n - Mejoras en proceso de exportar/importar tu base de datos\n - Ahora al reestablecer todo por seguridad es obligatorio exportar una copia de tu base de datos"
+  "version": 4,
+  "title": "Nueva Actualización disponible - v 1.0.2",
+  "message": "Actualización disponible \n - Corrección de un bug en importación de productos cuando había más de una categoría por producto\n - En Configuración > Personalización se agregó opción para cambiar el layout preferido para agilizar tus ventas según tu modo de trabajo"
 }
