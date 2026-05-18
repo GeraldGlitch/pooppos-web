@@ -1,5 +1,5 @@
 {
-  "version": 4,
-  "title": "Nueva Actualización disponible - v 1.0.2",
-  "message": "Actualización disponible \n - Corrección de un bug en importación de productos cuando había más de una categoría por producto\n - En Configuración > Personalización se agregó opción para cambiar el layout preferido para agilizar tus ventas según tu modo de trabajo"
+  "version": 5,
+  "title": "Nueva Actualización disponible - v 1.0.3",
+  "message": "Actualización disponible \n - Mejora en la pantalla de gastos, ahora muestra la descripción si hay alguna\n - En caso de anular un gasto, este guarda la descripción del gasto an logs/actividad no solo el ID"
 }
