@@ -1,5 +1,5 @@
 {
-  "version": 5,
-  "title": "Nueva Actualización disponible - v 1.0.3",
-  "message": "Actualización disponible \n - Mejora en la pantalla de gastos, ahora muestra la descripción si hay alguna\n - En caso de anular un gasto, este guarda la descripción del gasto an logs/actividad no solo el ID"
+  "version": 6,
+  "title": "Nueva Actualización disponible - v 1.0.4",
+  "message": "Actualización disponible \n - Correxión en bug de iconos en la versión anterior\n - En Inventario se agregó Servicios para más versatilidad cuando no es necesariamente un producto \n - Al crear un producto ahora puedes elegir la opción de que siempre esté en stock"
 }
