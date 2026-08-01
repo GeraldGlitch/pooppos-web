@@ -230,6 +230,18 @@
       background: rgba(42, 42, 42, 0.4);
       border: 1px solid rgba(255, 255, 255, 0.05);
     }
+
+    /* Version card */
+    .version-card {
+      background: linear-gradient(145deg, rgba(42, 42, 42, 0.3), rgba(26, 26, 26, 0.5));
+      border: 1px solid rgba(241, 147, 56, 0.15);
+      transition: all 0.3s ease;
+    }
+
+    .version-card:hover {
+      border-color: rgba(241, 147, 56, 0.3);
+      box-shadow: 0 4px 20px -8px rgba(241, 147, 56, 0.1);
+    }
   </style>
 </head>
 
@@ -357,6 +369,15 @@
             <div class="text-2xl sm:text-3xl font-bold gradient-text">∞</div>
             <div class="text-xs text-dark-400 mt-1">Sin límites</div>
           </div>
+        </div>
+
+        <!-- Version card -->
+        <div id="version-card" class="version-card mt-8 max-w-md mx-auto rounded-2xl p-5 text-left hidden">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-poop-400 animate-pulse"></span>
+            <span id="version-title" class="text-sm font-semibold text-poop-300"></span>
+          </div>
+          <p id="version-message" class="text-xs text-dark-400 leading-relaxed whitespace-pre-line"></p>
         </div>
       </div>
     </div>
@@ -853,6 +874,29 @@
       el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
       observer.observe(el);
     });
+
+    // Version card: fetch version.json, fallback embebido si falla (file:// bloquea fetch por CORS)
+    const fallbackVersion = {
+      title: "Nueva Actualización disponible - v 1.0.5",
+      message: "New update available (1.0.5) \n\n-Vista gráfica agregada en Reportes\n-Trazabilidad en inventario \n- Datos de negocio agregado \n - Trabajando en opción para imprimir recibo"
+    };
+
+    function showVersionCard(data) {
+      if (data.title && data.message) {
+        document.getElementById('version-title').textContent = data.title;
+        document.getElementById('version-message').textContent = data.message;
+        document.getElementById('version-card').classList.remove('hidden');
+      }
+    }
+
+    try {
+      fetch('version.json')
+        .then(res => res.json())
+        .then(data => showVersionCard(data))
+        .catch(() => showVersionCard(fallbackVersion));
+    } catch {
+      showVersionCard(fallbackVersion);
+    }
   </script>
 </body>
 
